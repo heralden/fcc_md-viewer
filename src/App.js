@@ -1,18 +1,36 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import marked from 'marked';
+import { sample } from './data';
 import './App.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      text: sample
+    };
+  }
+
+  onChange = (e) => {
+    this.setState({
+      text: e.target.value
+    });
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+
+        <textarea className="Text"
+          autofocus onChange={this.onChange}>
+          {this.state.text}
+        </textarea>
+
+        <div className="Markdown"
+          dangerouslySetInnerHTML={{
+          __html: marked.parse(this.state.text, { sanitize: true })
+        }}/>
+
       </div>
     );
   }
